@@ -5,7 +5,11 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -19,23 +23,36 @@ public class CustomListFragment extends ListFragment
     private CustomAdapter mCustomAdapter;
     private boolean mIsLoading = false;
     private int mCount = 0;
+    private ProgressBar mProgressBar;
 
     private final static String TAG = CustomListFragment.class.getSimpleName();
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (container == null) {
+            return null;
+        }
+        return inflater.inflate(R.layout.fragment_sample, container, false);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mProgressBar = (ProgressBar)getView().findViewById(R.id.progressBar);
         mCustomAdapter = new CustomAdapter(getActivity());
         setListAdapter(mCustomAdapter);
+
 
         // スクロールリスナーを設定
         getListView().setOnScrollListener(this);
 
-        setListShown(false);
+//        setListShown(false);
 
         mIsLoading = true;
 
+        // プログレスバーを表示する
+        mProgressBar.setVisibility(View.VISIBLE);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -48,7 +65,9 @@ public class CustomListFragment extends ListFragment
     public void onLoadFinished(Loader<List<Entry>> loader, List<Entry> data) {
         mCustomAdapter.setData(data);
         mIsLoading = false;
-        setListShown(true);
+//        setListShown(true);
+        // プログレスバーを消す
+        mProgressBar.setVisibility(View.GONE);
         mCount++;
     }
 
@@ -75,7 +94,9 @@ public class CustomListFragment extends ListFragment
         if (mIsLoading) {
             return;
         }
-        setListShown(false);
+//        setListShown(false);
+        // プログレスバーを表示する
+        mProgressBar.setVisibility(View.VISIBLE);
         mIsLoading = true;
         getLoaderManager().initLoader(mCount, null, this);
     }

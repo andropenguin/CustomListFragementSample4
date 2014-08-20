@@ -4,9 +4,14 @@
               android:orientation="vertical">
 
     <ListView
-            android:id="@+id/ListView"
+            android:id="@id/android:list"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1" />
 
+    <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 </LinearLayout>
